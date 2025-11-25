@@ -1,30 +1,30 @@
 ﻿using Base;
 using Util;
 
+LevelsNetworkTest();
 
-# region ==== initialization ====
+# region ==== network tests ====
 
-var startLevel = ConsoleUtil.ReadInput("enter initial level");
-var stepsCount = ConsoleUtil.ReadInput("enter number of levels");
-var stepSize   = ConsoleUtil.ReadInput("enter stepSize");
+static void LevelsNetworkTest()
+{
+    #region ==== initialization ====
 
-# endregion
+    var startLevel = ConsoleUtil.ReadDecimal("enter initial level");
+    var stepsCount = ConsoleUtil.ReadDecimal("enter number of levels");
+    var stepSize   = ConsoleUtil.ReadDecimal("enter stepSize");
+    var direction = ConsoleUtil.ReadSide("enter network direction (S/L)");
 
-# region ==== tests ====
+    #endregion
+    #region ==== tests ====
 
-//Console.WriteLine("\nTest non-uniform short network:");
-//TestNonUniformNetwork(Side.Sell, startLevel, stepSize, stepsCount);
+    //Console.WriteLine("\nTest non-uniform network:\n");
+    //TestNonUniformNetwork(direction, startLevel, stepSize, stepsCount);
 
-//Console.WriteLine("\nTest non-uniform long network:");
-//TestNonUniformNetwork(Side.Buy, startLevel, stepSize, stepsCount);
+    Console.WriteLine("\nTest uniform network:\n");
+    TestUniformNetwork(direction, startLevel, stepSize, stepsCount);
 
-//Console.WriteLine("\nTest uniform short network:");
-//TestUniformNetwork(Side.Sell, startLevel, stepSize, stepsCount);
-
-Console.WriteLine("\nTest uniform long network:");
-TestUniformNetwork(Side.Buy, startLevel, stepSize, stepsCount);
-
-# endregion
+    #endregion
+}
 
 # region === test methods ====
 static void TestNonUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
@@ -41,7 +41,8 @@ static void TestNonUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
             {
                 p = 0;
             }
-        } else
+        }
+        else
         {
             p += ss;
         }
@@ -62,3 +63,4 @@ static void TestUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
 
 # endregion
 
+# endregion
