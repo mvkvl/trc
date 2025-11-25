@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="RobotsLib/RobotsLib.csproj" />
+  <Project Path="TestConsoleApp/TestConsoleApp.csproj" />
+</Solution>
