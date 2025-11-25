@@ -6,7 +6,7 @@ using Util;
 
 var startLevel = ConsoleUtil.ReadInput("enter initial level");
 var stepSize   = ConsoleUtil.ReadInput("enter stepSize");
-var stepsCount = ConsoleUtil.ReadInput("enter number of steps");
+var stepsCount = ConsoleUtil.ReadInput("enter number of levels");
 
 # endregion
 
