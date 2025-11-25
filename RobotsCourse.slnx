@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Base/Base.csproj" />
+  <Project Path="Calculator/Calculator.csproj" Id="81cf7177-7869-42ca-9fe0-e089f05846be" />
   <Project Path="Exchange/Exchange.csproj" Id="526aea51-4a2b-4c80-a252-658db24dc8f4" />
   <Project Path="TestConsoleApp/TestConsoleApp.csproj" />
   <Project Path="TestWpfApp/TestWpfApp.csproj" Id="f12c2355-2612-428c-a9d5-b9e9899b5258" />
