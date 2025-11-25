@@ -1,6 +1,6 @@
 ﻿namespace Util
 {
-    internal class ConsoleUtil
+    public class ConsoleUtil
     {
         public static decimal ReadInput(string q)
         {
