@@ -6,6 +6,9 @@ namespace Base
     #region === LEVEL ===
     public class Level
     {
+        #region ====== Constants ======
+        private static readonly decimal LOT_SIZE = 1;
+        #endregion
 
         #region ====== Fields ======
 
@@ -17,7 +20,7 @@ namespace Base
         /// <summary>
         /// Рабочий (целевой) лот
         /// </summary>
-        public decimal TargetLot = 0;
+        public decimal TargetLot = LOT_SIZE;
 
         /// <summary>
         /// Открытый объём
@@ -47,13 +50,6 @@ namespace Base
   
         #endregion
 
-    }
-    #endregion
-
-    #region === SIDE ===
-    public enum Side
-    {
-        Sell, Buy
     }
     #endregion
 
