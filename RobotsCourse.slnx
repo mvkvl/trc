@@ -2,5 +2,6 @@
   <Project Path="Base/Base.csproj" />
   <Project Path="Exchange/Exchange.csproj" Id="526aea51-4a2b-4c80-a252-658db24dc8f4" />
   <Project Path="TestConsoleApp/TestConsoleApp.csproj" />
+  <Project Path="TestWpfApp/TestWpfApp.csproj" Id="f12c2355-2612-428c-a9d5-b9e9899b5258" />
   <Project Path="Util/Util.csproj" Id="878855c0-2f63-4f43-9147-29d6b0ba2d7a" />
 </Solution>
