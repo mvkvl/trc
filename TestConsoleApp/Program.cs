@@ -2,6 +2,8 @@
 using Util;
 using Exchange;
 
+#pragma warning disable CS8321 // Локальная функция объявлена, но не используется
+
 try
 {
     //LevelsNetworkTest();
@@ -45,7 +47,7 @@ static void DelegatesTest()
 
 #endregion
 
-# region ==== network tests ====
+#region ==== network tests ====
 
 static void LevelsNetworkTest()
 {
@@ -68,7 +70,7 @@ static void LevelsNetworkTest()
     #endregion
 }
 
-# region === test methods ====
+#region === test methods ====
 static void TestNonUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
 {
     var net = new Network(side);
@@ -106,3 +108,5 @@ static void TestUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
 # endregion
 
 # endregion
+
+#pragma warning restore CS8321 // Локальная функция объявлена, но не используется

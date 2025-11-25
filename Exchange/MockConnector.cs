@@ -3,7 +3,7 @@
     public class MockConnector
     {
         private Timer? _timer;
-        public event TradeHandlerDelegate TradeEvent;
+        public event TradeHandlerDelegate? TradeEvent;
         private readonly Random _rnd = new();
 
         public void Connect()
@@ -17,8 +17,7 @@
 
         private void SubscribeTrades()
         {
-            TimerCallback tmcb = new(GenerateTrade);
-            _timer = new Timer(tmcb, null, 0, 1300);
+            _timer = new Timer(new(GenerateTrade), null, 0, 1300);
         }
         private void UnsubscribeTrades()
         {
