@@ -1,7 +1,41 @@
 ﻿using Base;
 using Util;
+using Exchange;
 
-LevelsNetworkTest();
+//LevelsNetworkTest();
+DelegatesTest();
+
+# region ==== delegates test ====
+
+static void DelegatesTest()
+{
+
+    MockConnector c = new();
+    
+    static void thd1(TradeEvent t)
+    {
+        Console.WriteLine($"th1: new trade {t.Time:T} {t.SecCode} {t.Price} {t.Volume}");
+    }
+    static void thd2(TradeEvent t)
+    {
+        Console.WriteLine($"th2: new trade {t.Time:T} {t.SecCode} {t.Price} {t.Volume}");
+    }
+
+    c.Connect();
+    c.TradeEvent += thd1;
+    Thread.Sleep(5000);
+    c.TradeEvent += thd2;
+    Thread.Sleep(5000);
+    c.TradeEvent -= thd2;
+    Thread.Sleep(5000);
+    c.TradeEvent -= thd1;
+    Thread.Sleep(5000);
+    c.Disconnect();
+    Thread.Sleep(5000);
+
+}
+
+#endregion
 
 # region ==== network tests ====
 
