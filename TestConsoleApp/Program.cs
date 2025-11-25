@@ -2,8 +2,16 @@
 using Util;
 using Exchange;
 
-//LevelsNetworkTest();
-DelegatesTest();
+try
+{
+    //LevelsNetworkTest();
+    DelegatesTest();
+} 
+catch (Exception e)
+{
+    Console.WriteLine($"Application exception: {e}");
+}
+
 
 # region ==== delegates test ====
 
