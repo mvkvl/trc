@@ -18,7 +18,6 @@ namespace Util
             }
             return 0;
         }
-
         public static Side ReadSide(string q)
         {
             Console.Write(q + ": ");
