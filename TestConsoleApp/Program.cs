@@ -2,7 +2,9 @@
 using Util;
 using Exchange;
 
+# region === pragma: off ===
 #pragma warning disable CS8321 // Локальная функция объявлена, но не используется
+#endregion
 
 try
 {
@@ -109,4 +111,6 @@ static void TestUniformNetwork(Side side, decimal sl, decimal ss, decimal sc)
 
 # endregion
 
+# region === pragma: on ===
 #pragma warning restore CS8321 // Локальная функция объявлена, но не используется
+#endregion
