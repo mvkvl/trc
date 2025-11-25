@@ -1,4 +1,3 @@
 <Solution>
-  <Project Path="RobotsLib/Base.csproj" />
   <Project Path="TestConsoleApp/TestConsoleApp.csproj" />
 </Solution>
