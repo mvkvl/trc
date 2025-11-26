@@ -11,9 +11,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="*" 
-                              MinWidth="50"
-                              MaxWidth="150"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -152,7 +150,19 @@
             <DataGrid x:Name="_dataGrid" 
                       Margin="5"
                       FontSize="14"
-                      FontWeight="DemiBold"/>
+                      FontWeight="DemiBold">
+<!--                
+                <DataGrid.Columns>
+                    <DataGridTextColumn>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+-->                
+            </DataGrid>
         </GroupBox>
 
     </Grid>

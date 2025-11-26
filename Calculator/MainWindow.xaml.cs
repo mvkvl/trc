@@ -76,8 +76,37 @@ namespace Calculator
                     .WithGo(_go.Text)
                     .WithMinDepoPrc(_minDepoPrc.Text);
                 _dataGrid.ItemsSource = _calc.Calculate(cc);
+                var v = this.TryFindResource("DataGridCellRighAligned");
+                if (v != null)
+                {
+                    _dataGrid.Columns[1].CellStyle = (Style)v;
+                    _dataGrid.Columns[2].CellStyle = (Style)v;
+                    _dataGrid.Columns[3].CellStyle = (Style)v;
+                    _dataGrid.Columns[5].CellStyle = (Style)v;
+                }
+                v = this.TryFindResource("DataGridCellCenterAligned");
+                if (v != null)
+                {
+                    _dataGrid.Columns[4].CellStyle = (Style)v;
+                    _dataGrid.Columns[6].CellStyle = (Style)v;
+                }
+
+                _dataGrid.Columns[0].Header = "Стратегия";
+                _dataGrid.Columns[1].Header = "Депозит";
+                _dataGrid.Columns[2].Header = "Результат";
+                _dataGrid.Columns[3].Header = "П/У";
+                _dataGrid.Columns[4].Header = "П/У %";
+                _dataGrid.Columns[5].Header = "Макс. просадка";
+                _dataGrid.Columns[6].Header = "Макс. просадка %";
+
+
+                _dataGrid.Columns[1].Width = 100;
+                _dataGrid.Columns[2].Width = 100;
+                _dataGrid.Columns[3].Width = 100;
+                _dataGrid.Columns[4].Width = 100;
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 MessageBox.Show($"{err}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
