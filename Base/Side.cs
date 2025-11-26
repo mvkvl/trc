@@ -9,7 +9,7 @@ namespace Base
     #region === SIDE ===
     public enum Side
     {
-        Sell, Buy
+        Sell, Buy, None
     }
     #endregion
 }

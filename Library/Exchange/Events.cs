@@ -8,7 +8,7 @@ namespace Exchange
 {
     public class TradeEvent
     {
-        public string   SecCode = "";
+        public string   SecCode;
         public decimal  Volume;
         public decimal  Price;
         public DateTime Time;
