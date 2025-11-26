@@ -54,7 +54,7 @@
                    Grid.Row="4"
                    Margin="10, 10, 5, 5"
                    FontWeight="DemiBold"/>
-        <TextBlock Text="Процент рибыли" 
+        <TextBlock Text="Процент прибыли" 
                    Grid.Column="0" 
                    Grid.Row="5"
                    Margin="10, 10, 5, 5"
