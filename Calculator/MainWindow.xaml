@@ -25,8 +25,6 @@
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
             <RowDefinition Height="*"  
                            MinHeight="350"/>
         </Grid.RowDefinitions>
@@ -151,19 +149,14 @@
                       Margin="5"
                       FontSize="14"
                       FontWeight="DemiBold">
-<!--                
-                <DataGrid.Columns>
-                    <DataGridTextColumn>
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Right" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
--->                
             </DataGrid>
         </GroupBox>
+
+        <Canvas x:Name="_canvas"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Grid.Row="10"
+                Margin="10, 10, 10, 10"/>
 
     </Grid>
 

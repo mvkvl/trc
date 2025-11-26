@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator
 {
@@ -151,6 +145,8 @@ namespace Calculator
             }
         }
 
+        internal List<decimal> Equity { get; set; }
+
         public CalculatedData(decimal initialDepo, Strategy strategy)
         {
             _initialDepo = initialDepo;
@@ -202,6 +198,7 @@ namespace Calculator
             data.ResultingDepoValue = stc.Balance();
             data._maxDrawDown = stc.MaxDrawDown();
             data._maxDrawDownPercent = stc.RelativeDrawDown();
+            data.Equity = stc.Equity();
         }
 
     }
@@ -215,6 +212,7 @@ namespace Calculator
         decimal Balance();
         decimal MaxDrawDown();
         decimal RelativeDrawDown();
+        List<decimal> Equity();
     }
 
     internal abstract class AbstractStrategyCalculator : IStrategyCalculator
@@ -265,6 +263,10 @@ namespace Calculator
         public decimal RelativeDrawDown()
         {
             return relDrawDown;
+        }
+        public List<decimal> Equity()
+        {
+            return equity;
         }
         protected int CalculateLot(decimal balance, decimal go, decimal prc)
         {
