@@ -62,6 +62,10 @@ namespace Calculator
 
         private void MethodSelectorSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_data == null)
+            {
+                return;
+            }
             ComboBox cb = sender as ComboBox;
             Draw(_data[cb.SelectedIndex]);
         }
