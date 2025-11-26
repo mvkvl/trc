@@ -1,4 +1,5 @@
-﻿using Exchange;
+﻿using Base;
+using Exchange;
 using System;
 
 namespace MvvmTest.Models
@@ -29,6 +30,17 @@ namespace MvvmTest.Models
             }
         }
 
+        private decimal _total;
+        public decimal Total
+        {
+            get => _total;
+            set
+            {
+                _total = value;
+                OnPropertyChanged(nameof(Total));
+            }
+        }
+
         private DateTime _time;
         public DateTime Time
         {
@@ -37,6 +49,17 @@ namespace MvvmTest.Models
             {
                 _time = value;
                 OnPropertyChanged(nameof(Time));
+            }
+        }
+
+        private Side _side;
+        public Side Side
+        {
+            get => _side;
+            set
+            {
+                _side = value;
+                OnPropertyChanged(nameof(Side));
             }
         }
 
@@ -51,6 +74,8 @@ namespace MvvmTest.Models
             Volume = te.Volume;
             Price = te.Price;
             Time = te.Time;
+            Side = te.Side;
+            Total = te.Price * te.Volume;
         }
     }
 }
