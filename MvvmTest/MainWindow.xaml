@@ -6,10 +6,20 @@
         xmlns:local="clr-namespace:MvvmTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock Text="{Binding Number}"
-                   Width="100"
-                   Height="30"
-                   FontSize="21"/>
-    </Grid>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Height" Value="60" />
+            <!--<Setter Property="Width" Value="300" />-->
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="Foreground" Value="DarkSlateGray" />
+            <Setter Property="Background" Value="LightBlue" />
+            <Setter Property="Margin" Value="0,10,0,10" />
+            <Setter Property="Padding" Value="10,10,10,10" />
+        </Style>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical" Margin="10">
+        <TextBlock Text="{Binding Time, StringFormat={}{0:dd.MM.yyyy hh:mm:ss}}"/>
+        <TextBlock Text="{Binding Price, StringFormat={}{0:N2}}"/>
+        <TextBlock Text="{Binding Volume}"/>
+    </StackPanel>
 </Window>

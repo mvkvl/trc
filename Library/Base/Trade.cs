@@ -11,12 +11,13 @@ namespace Base
         public string   SecurityCode = "";
         public string   ClassCode    = "";
         public string   Portfolio    = "";
+        public Side     Side         = Side.None;
         public DateTime Time         = DateTime.MinValue;
 
         #endregion
         #region ===== Properties =====
-        private decimal _volume = 0;
 
+        private decimal _volume = 0;
         public decimal Volume
         {
             get
@@ -32,6 +33,7 @@ namespace Base
                 _volume = value;
             }
         }
+
         #endregion
 
     }

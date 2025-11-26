@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base;
+using System;
 using System.Threading;
 
 namespace Exchange
@@ -20,7 +21,7 @@ namespace Exchange
 
         private void SubscribeTrades()
         {
-            _timer = new Timer(new(GenerateTrade), null, 0, 1300);
+            _timer = new Timer(new(GenerateTrade), null, 0, 1000);
         }
         private void UnsubscribeTrades()
         {
@@ -39,6 +40,10 @@ namespace Exchange
                 Price = Convert.ToDecimal(_rnd.NextDouble()) * _rnd.Next(7),
                 Time = DateTime.Now
             };
+            if (_rnd.Next(1, 100) > 50)
+                t.Side = Side.Sell;
+            else
+                t.Side = Side.Buy;
             TradeEvent?.Invoke(t);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Exchange
         public decimal  Volume;
         public decimal  Price;
         public DateTime Time;
+        public Side     Side;
     }
 
     public delegate void TradeHandlerDelegate(TradeEvent evt);

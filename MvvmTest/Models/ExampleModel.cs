@@ -1,37 +1,56 @@
-﻿using System;
-using System.Timers;
+﻿using Exchange;
+using System;
 
 namespace MvvmTest.Models
 {
     public class ExampleModel : BaseModel
     {
 
-        private int _number;
-        public int Number
+        private Server _server;
+
+        private decimal _volume;
+        public decimal Volume
         {
-            get => _number;
-            set
-            {
-                _number = value;
-                OnPropertyChanged(nameof(Number));
+            get => _volume;
+            set { 
+                _volume = value;
+                OnPropertyChanged(nameof(Volume));
             }
         }
 
-        private Random _rnd = new Random();
-
-        public ExampleModel() {
-            System.Timers.Timer tm = new System.Timers.Timer
-            {
-                Interval = 1000
-            };
-            tm.Elapsed += TimerElapsed;
-            tm.Start();
-        }
-
-        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        private decimal _price;
+        public decimal Price
         {
-            Number = _rnd.Next(0, 100);
+            get => _price;
+            set
+            {
+                _price = value;
+                OnPropertyChanged(nameof(Price));
+            }
         }
 
+        private DateTime _time;
+        public DateTime Time
+        {
+            get => _time;
+            set
+            {
+                _time = value;
+                OnPropertyChanged(nameof(Time));
+            }
+        }
+
+        public ExampleModel()
+        {
+            _server = new Server();
+            _server.TradeReceivedEvent += TradeReceivedEventHandler;
+        }
+
+        private void TradeReceivedEventHandler(Exchange.TradeEvent te)
+        {
+            Volume = te.Volume;
+            Price = te.Price;
+            Time = te.Time;
+        }
     }
 }
