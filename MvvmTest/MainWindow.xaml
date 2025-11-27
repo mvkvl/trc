@@ -5,23 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MvvmTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MVVM Example" 
+        Height="430" 
+        Width="500"
+        MaxHeight="430"
+        MaxWidth="500"        
+    >
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Height" Value="60" />
             <!--<Setter Property="Width" Value="300" />-->
             <Setter Property="FontSize" Value="28" />
             <Setter Property="Foreground" Value="DarkSlateGray" />
-            <Setter Property="Background" Value="LightBlue" />
-            <Setter Property="Margin" Value="0,10,0,10" />
-            <Setter Property="Padding" Value="10,10,10,10" />
+            <!--<Setter Property="Background" Value="LightBlue" />-->
+            <Setter Property="Margin" Value="5,0,0,0" />
+            <Setter Property="Padding" Value="0,8,0,0" />
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="0"/>
         </Style>
     </Window.Resources>
-    <StackPanel Orientation="Vertical" Margin="10">
-        <TextBlock Text="{Binding Time, StringFormat={}{0:dd.MM.yyyy hh:mm:ss}}"/>
-        <TextBlock Text="{Binding Volume}"/>
-        <TextBlock Text="{Binding Price, StringFormat={}{0:N2}}"/>
-        <TextBlock Text="{Binding Total, StringFormat={}{0:N2}}"/>
-        <TextBlock Text="{Binding Side}"/>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Время"
+                   Grid.Column="0"
+                   Grid.Row="0"/>
+        <TextBlock Text="{Binding Time, StringFormat={}{0:dd.MM.yyyy hh:mm:ss}}"
+                   Grid.Column="1"
+                   Grid.Row="0"/>
+
+        <TextBlock Text="Объём"
+                   Grid.Column="0"
+                   Grid.Row="1"/>
+        <TextBlock Text="{Binding Volume}"
+                   Grid.Column="1"
+                   Grid.Row="1"/>
+
+        <TextBlock Text="Цена"
+                   Grid.Column="0"
+                   Grid.Row="2"/>
+        <TextBlock Text="{Binding Price, StringFormat={}{0:N2}}"
+                   Grid.Column="1"
+                   Grid.Row="2"/>
+
+        <TextBlock Text="Стоимость"
+                   Grid.Column="0"
+                   Grid.Row="3"/>
+        <TextBlock Text="{Binding Total, StringFormat={}{0:N2}}"
+                   Grid.Column="1"
+                   Grid.Row="3"/>
+
+        <TextBlock Text="Направление"
+                   Grid.Column="0"
+                   Grid.Row="4"/>
+        <TextBlock Text="{Binding Side}"
+                   Grid.Column="1"
+                   Grid.Row="4"/>
+
+    </Grid>
 </Window>
