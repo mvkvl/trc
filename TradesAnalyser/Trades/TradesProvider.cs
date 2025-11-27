@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using TradesAnalyser.Models;
 
 namespace TradesAnalyser.Trades
 {
-    internal class TradeDataProvider
+    internal class TradesProvider
     {
         private readonly IFormatProvider numberFormatProvider = new NumberFormatInfo { 
             NumberGroupSeparator = " ",
             NumberDecimalSeparator = "." 
         };
+        private readonly CultureInfo cultureInfo = new CultureInfo("ru-RU");
 
         public List<Trade> Trades { get; private set;  }
-
-        public TradeDataProvider() {
+        public TradesProvider() {
         }
 
         public void Load(string fileName)
@@ -72,7 +73,7 @@ namespace TradesAnalyser.Trades
             string dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
             try
             {
-                parsedDateTime = DateTime.ParseExact(dateTimeString, dateTimeFormat, CultureInfo.InvariantCulture);
+                parsedDateTime = DateTime.ParseExact(dateTimeString, dateTimeFormat, cultureInfo);
             }
             catch (Exception e)
             {

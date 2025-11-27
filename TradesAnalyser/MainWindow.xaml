@@ -5,81 +5,247 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TradesAnalyser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="800">
+        Title="{Binding WindowTitle}" Height="650" Width="1245" MinWidth="1240" MaxWidth="1240">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin"       Value="2"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Height"       Value="20"/>
+            <Setter Property="MinHeight"    Value="20"/>
+            <Setter Property="Width"        Value="35"/>
+            <Setter Property="MinWidth"     Value="35"/>
+        </Style>
+        <Style TargetType="ProgressBar">
+            <Setter Property="Height"       Value="5"/>
+            <Setter Property="Width"        Value="35"/>
+            <Setter Property="Padding"      Value="0, 0, 0, 0"/>
+            <Setter Property="Margin"       Value="2, 5, 2, 0"/>
+        </Style>
+    </Window.Resources>
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="*"  
-                           MinHeight="50"/>
+            <RowDefinition Height="250" />
+            <RowDefinition Height="*" 
+                            MinHeight="50"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Депозит" 
-                   Grid.Column="0"
-                   Grid.Row="0"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBox   Text="{Binding Depo}"
-                   Grid.Column="1" 
-                   Grid.Row="0"
-                   Margin="10"
-                   FontWeight="DemiBold"/>
+        <!-- Параметры -->
+        <GroupBox
+            Header="Параметры"
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.ColumnSpan="4"
+            MaxWidth="194"
+            MinWidth="194"
+            MaxHeight="240"
+            MinHeight="240"
+            Background="Transparent"
+            HorizontalAlignment="Left"
+            Margin="7, 0, 0, 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                </Grid.RowDefinitions>
 
-        <TextBlock Text="Сделки" 
-                   Grid.Column="0"
-                   Grid.Row="1"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <Button   Command="{Binding CmdFileOpen}"
-                  Grid.Column="1"
-                  Grid.Row="1"
-                  Margin="10, 5, 10, 5"
-                  >Загрузить</Button>
+                <TextBlock 
+                        Text="Сделки" 
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="10, 10, 5, 5"
+                        FontWeight="DemiBold"/>
+                <Button   
+                        Command="{Binding CmdFileOpen}"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Margin="10, 5, 10, 5">
+                    Загрузить
+                </Button>
 
-        <ComboBox 
-                  Grid.Column="0"
-                  Grid.Row="9"
-                  Margin="10, 5, 10, 5"></ComboBox>
-        <Button   Command="{Binding CmdCalculate}"
-                  Grid.Column="1"
-                  Grid.Row="9"
-                  Margin="10, 5, 10, 5"
-                  >Расчитать</Button>
+                <TextBlock 
+                        Text="Дата от" 
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Margin="10, 10, 5, 5"
+                        FontWeight="DemiBold"/>
+                <DatePicker
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="10, 5, 10, 5"
+                        SelectedDate="{Binding DateFrom}"/>
 
-        <GroupBox 
-                  Header="Таблица сделок"
-                  Grid.Column="2"
-                  Grid.Row="0"
-                  Grid.RowSpan="10"
-                  Margin="0, 5, 10, 5">
-            <DataGrid 
-                      Margin="5"
-                      FontSize="14"
-                      FontWeight="DemiBold">
-            </DataGrid>
+                <TextBlock 
+                        Text="Дата до" 
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        Margin="10, 10, 5, 5"
+                        FontWeight="DemiBold"/>
+                <DatePicker
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        Margin="10, 5, 10, 5"
+                        SelectedDate="{Binding DateTo}"/>
+
+                <TextBlock
+                        Text="Депозит" 
+                        Grid.Column="0"
+                        Grid.Row="3"
+                        Margin="10, 10, 5, 5"
+                        FontWeight="DemiBold"/>
+                <TextBox
+                        Text="{Binding Depo}"
+                        Grid.Column="1" 
+                        Grid.Row="3"
+                        Margin="10, 7, 10, 7"
+                        FontWeight="DemiBold"/>
+            </Grid>
         </GroupBox>
 
-        <Canvas 
+        <!-- Результаты -->
+        <GroupBox    
+                Header="Результаты"
                 Grid.Column="0"
-                Grid.ColumnSpan="3"
-                Grid.Row="10"
-                Background="LightSlateGray"
-                Margin="10, 10, 10, 10"/>
+                Grid.Row="1"
+                Grid.ColumnSpan="6"
+                MaxWidth="290"
+                MinWidth="290"
+                MaxHeight="240"
+                MinHeight="240"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Margin="7, 0, 0, 0">
+            <DataGrid ItemsSource="{Binding CalculatedData}"/>
+        </GroupBox>
+            
+        <!-- Дни / часы -->
+        <GroupBox 
+                Header="Сделки (по часам)"
+                Grid.Column="4"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                MaxWidth="1010"
+                MinWidth="1010"
+                MaxHeight="240"
+                MinHeight="240"
+                HorizontalAlignment="Left"
+                Margin="5, 0, 0, 0">
+            <ItemsControl 
+                Background="Transparent"
+                Margin="10, 10, 10, 10"
+                ItemsSource="{Binding TradeWeek}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel 
+                                        Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel 
+                                        Background="Transparent"
+                                        Orientation="Vertical"
+                                        Margin="1, 1"
+                                        Height="50">
+                                    <ProgressBar 
+                                        Minimum="0"
+                                        Maximum="{Binding Max}"
+                                        Value="{Binding Value}"
+                                        Foreground="{Binding Color}"/>
+                                    <CheckBox
+                                        IsChecked="{Binding IsActive}"
+                                        Content="{Binding Hour}"
+                                        />
+                                    </StackPanel>
+                                </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
+
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="7" Background="LightGray">
+            <StatusBarItem>
+                <TextBlock Text="{Binding TotalTradesStatus, StringFormat=Total Trades: {0:D}}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding FilteredTradesStatus, StringFormat=Filtered Trades: {0:D}}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding PnlStatus}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding PnlUpdStatus}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding PnlFltStatus}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding PnlFltUpdStatus}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem HorizontalAlignment="Right">
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="T/A" />
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
-
+       
 </Window>
+
+
+
+<!--
+            <ComboBox 
+                    Grid.Column="0"
+                    Grid.Row="9"
+                    Margin="10, 5, 10, 5"></ComboBox>
+            <Button 
+                    Command="{Binding CmdCalculate}"
+                    Grid.Column="1"
+                    Grid.Row="9"
+                    Margin="10, 5, 10, 5">
+                Расчитать
+            </Button>
+            <GroupBox 
+                    Header="Таблица сделок"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="10"
+                    Margin="0, 5, 10, 5">
+                <DataGrid 
+                    Margin="5"
+                    FontSize="14"
+                    FontWeight="DemiBold"/>
+            </GroupBox>
+    -->

@@ -56,9 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\TradeHour.cs" />
+    <Compile Include="Models\TradeHourContainer.cs" />
     <Compile Include="Trades\Trade.cs" />
-    <Compile Include="Trades\TradeAnalyser.cs" />
-    <Compile Include="Trades\TradeDataProvider.cs" />
+    <Compile Include="Trades\TradesProcessor.cs" />
+    <Compile Include="Trades\TradesProvider.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,7 +76,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ApplicationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,9 +102,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{e6276fbf-e643-4c9d-aeeb-7cad3bd03168}</Project>
