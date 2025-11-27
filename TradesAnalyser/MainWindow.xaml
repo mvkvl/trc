@@ -33,113 +33,35 @@
                    Grid.Row="0"
                    Margin="10, 10, 5, 5"
                    FontWeight="DemiBold"/>
-        <TextBlock Text="Начальный лот" 
-                   Grid.Column="0" 
-                   Grid.Row="1"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Take" 
-                   Grid.Column="0" 
-                   Grid.Row="2"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Stop" 
-                   Grid.Column="0" 
-                   Grid.Row="3"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Комиссия" 
-                   Grid.Column="0" 
-                   Grid.Row="4"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Процент прибыли" 
-                   Grid.Column="0" 
-                   Grid.Row="5"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Кол-во сделок" 
-                   Grid.Column="0" 
-                   Grid.Row="6"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="Мин % депо" 
-                   Grid.Column="0" 
-                   Grid.Row="7"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-        <TextBlock Text="ГО" 
-                   Grid.Column="0" 
-                   Grid.Row="8"
-                   Margin="10, 10, 5, 5"
-                   FontWeight="DemiBold"/>
-
-        <TextBox 
+        <TextBox   Text="{Binding Depo}"
                    Grid.Column="1" 
                    Grid.Row="0"
                    Margin="10"
-                   Text="depo"
                    FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
+
+        <TextBlock Text="Сделки" 
+                   Grid.Column="0"
                    Grid.Row="1"
-                   Margin="10"
-                   Text="lot"
+                   Margin="10, 10, 5, 5"
                    FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="2"
-                   Margin="10"
-                   Text="take"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="3"
-                   Margin="10"
-                   Text="stop"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="4"
-                   Margin="10"
-                   Text="fee"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="5"
-                   Margin="10"
-                   Text="profit"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="6"
-                   Margin="10"
-                   Text="deals"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="7"
-                   Margin="10"
-                   Text="min depo prc"
-                   FontWeight="DemiBold"/>
-        <TextBox 
-                   Grid.Column="1" 
-                   Grid.Row="8"
-                   Margin="10"
-                   Text="go"
-                   FontWeight="DemiBold"/>
+        <Button   Command="{Binding CmdFileOpen}"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  Margin="10, 5, 10, 5"
+                  >Загрузить</Button>
 
         <ComboBox 
                   Grid.Column="0"
                   Grid.Row="9"
                   Margin="10, 5, 10, 5"></ComboBox>
-        <Button 
+        <Button   Command="{Binding CmdCalculate}"
                   Grid.Column="1"
                   Grid.Row="9"
                   Margin="10, 5, 10, 5"
                   >Расчитать</Button>
 
-        <GroupBox Header="Таблица результатов"
+        <GroupBox 
+                  Header="Таблица сделок"
                   Grid.Column="2"
                   Grid.Row="0"
                   Grid.RowSpan="10"

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradesAnalyser.Models;
 
 namespace TradesAnalyser
 {
@@ -23,6 +24,7 @@ namespace TradesAnalyser
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new Model();
         }
     }
 }
