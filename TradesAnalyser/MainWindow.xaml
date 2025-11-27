@@ -49,8 +49,8 @@
             Grid.ColumnSpan="4"
             MaxWidth="194"
             MinWidth="194"
-            MaxHeight="240"
-            MinHeight="240"
+            MaxHeight="250"
+            MinHeight="250"
             Background="Transparent"
             HorizontalAlignment="Left"
             Margin="7, 0, 0, 0">
@@ -153,13 +153,13 @@
                 Grid.ColumnSpan="4"
                 MaxWidth="1010"
                 MinWidth="1010"
-                MaxHeight="240"
-                MinHeight="240"
+                MaxHeight="250"
+                MinHeight="250"
                 HorizontalAlignment="Left"
                 Margin="5, 0, 0, 0">
             <ItemsControl 
                 Background="Transparent"
-                Margin="10, 10, 10, 10"
+                Margin="1, 1, 1, 1"
                 ItemsSource="{Binding TradeWeek}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -176,7 +176,7 @@
                                         Background="Transparent"
                                         Orientation="Vertical"
                                         Margin="1, 1"
-                                        Height="50">
+                                        Height="30">
                                     <ProgressBar 
                                         Minimum="0"
                                         Maximum="{Binding Max}"
