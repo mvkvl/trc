@@ -73,13 +73,21 @@
                         Grid.Row="0"
                         Margin="10, 10, 5, 5"
                         FontWeight="DemiBold"/>
-                <Button   
-                        Command="{Binding CmdFileOpen}"
+                <StackPanel 
+                        Orientation="Horizontal"
                         Grid.Column="1"
-                        Grid.Row="0"
-                        Margin="10, 5, 10, 5">
-                    Загрузить
-                </Button>
+                        Grid.Row="0">
+                    <Button   
+                        Command="{Binding CmdFileOpen}"
+                        Margin="10, 5, 5, 5"
+                        Width="70">
+                        Загрузить
+                    </Button>
+                    <Button
+                        Margin="0, 5, 5, 5"
+                        Width="25"
+                        Command="{Binding CmdReset}">⟳</Button>
+                </StackPanel>
 
                 <TextBlock 
                         Text="Дата от" 
@@ -125,9 +133,9 @@
                 Header="Результаты"
                 Grid.Column="0"
                 Grid.Row="1"
-                Grid.ColumnSpan="6"
-                MaxWidth="290"
-                MinWidth="290"
+                Grid.ColumnSpan="7"
+                MaxWidth="340"
+                MinWidth="340"
                 MaxHeight="240"
                 MinHeight="240"
                 HorizontalAlignment="Left"

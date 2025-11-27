@@ -37,13 +37,22 @@ namespace TradesAnalyser.Models
             }
             Trades = th;
         }
+
         public void Reset()
+        {
+            Reset(false);
+        }
+        public void Reset(bool resetActive)
         {
             foreach (List<TradeHour> lth in Trades)
             {
                 foreach (TradeHour th in lth)
                 {
+                    th.SelectionUpdated -= processorDelegate;
+                    if (resetActive)
+                        th.IsActive = true;
                     th.Pnl = 0;
+                    th.SelectionUpdated += processorDelegate;
                 }
             }
         }

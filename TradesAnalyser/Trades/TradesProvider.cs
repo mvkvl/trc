@@ -15,10 +15,14 @@ namespace TradesAnalyser.Trades
         };
         private readonly CultureInfo cultureInfo = new CultureInfo("ru-RU");
 
-        public List<Trade> Trades { get; private set;  }
+        public List<Trade> Trades { get; private set; } = new List<Trade>();
         public TradesProvider() {
         }
 
+        public void Reset()
+        {
+            Trades?.Clear();
+        }
         public void Load(string fileName)
         {
             var result = new List<Trade>();

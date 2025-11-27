@@ -11,7 +11,7 @@ namespace TradesAnalyser
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ApplicationModel(_resultsDataGrid);
+            DataContext = new ApplicationModel();
         }
 
     }

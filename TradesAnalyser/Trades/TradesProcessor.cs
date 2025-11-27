@@ -13,6 +13,10 @@ namespace TradesAnalyser.Trades
     {
         internal decimal Pnl(SourceType st, List<Trade> trades)
         {
+            if (trades == null || trades.Count == 0)
+            {
+                return 0;
+            }
             switch (st)
             {
                 case SourceType.ORIGINAL:
@@ -24,6 +28,10 @@ namespace TradesAnalyser.Trades
         }
         internal decimal Pnl(SourceType st, List<Trade> trades, TradeHourContainer thc)
         {
+            if (trades == null || trades.Count == 0)
+            {
+                return 0;
+            }
             switch (st)
             {
                 case SourceType.ORIGINAL:

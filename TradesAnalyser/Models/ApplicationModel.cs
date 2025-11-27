@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -13,11 +14,12 @@ namespace TradesAnalyser.Models
 {
     public class ApplicationModel: BaseModel
     {
+        private static string defaultTitle = "Trades Analyser";
+
         #region === Fields ====================================
 
         private readonly TradesProvider  _tradesProvider;
         private readonly TradesProcessor _tradesProcessor;
-        private readonly DataGrid        _resultsDataGrid;
 
         #endregion
 
@@ -60,6 +62,11 @@ namespace TradesAnalyser.Models
         public ICommand CmdFileOpen
         {
             get => cmdFileOpen;
+        }
+
+        public ICommand CmdReset
+        {
+            get => cmdReset;
         }
 
         #endregion
@@ -119,7 +126,7 @@ namespace TradesAnalyser.Models
         private readonly TradeHourContainer _hourlyTradesContainer;
         public List<List<TradeHour>> TradeWeek { get => _hourlyTradesContainer.Get(); }
 
-        public List<ResultData> CalculatedData { get; set; }
+        //public List<ResultData> CalculatedData { get; set; }
 
         #endregion
 
@@ -128,28 +135,30 @@ namespace TradesAnalyser.Models
         #region === Commands ==================================
 
         private CommandDelegate cmdFileOpen;
+        private CommandDelegate cmdReset;
 
         #endregion
 
         #region === Constructors & Initializers =======
 
-        public ApplicationModel(DataGrid resultsDataGrid)
+        public ApplicationModel()
         {
             // configure commands
             cmdFileOpen = new CommandDelegate(FileOpenButtonClickHandler);
-
-            // initialize properties
-            WindowTitle     = "Trades Analyser";
-            PnlStatus       = "PNL: N/A";
-            PnlUpdStatus    = "PNL UPD: N/A";
-            PnlFltStatus    = "PNL FILTERED: N/A";
-            PnlFltUpdStatus = "PNL FILTERED UPD: N/A";
+            cmdReset = new CommandDelegate(ResetButtonClickHandler);
 
             // initialize fields
-            _resultsDataGrid = resultsDataGrid;
             _tradesProvider        = new TradesProvider();
             _tradesProcessor       = new TradesProcessor();
             _hourlyTradesContainer = new TradeHourContainer(Calculate);
+
+            // initialize properties
+            Reset();
+            //WindowTitle = defaultTitle;
+            //PnlStatus = "PNL: N/A";
+            //PnlUpdStatus = "PNL UPD: N/A";
+            //PnlFltStatus = "PNL FILTERED: N/A";
+            //PnlFltUpdStatus = "PNL FILTERED UPD: N/A";
         }
 
 
@@ -168,7 +177,7 @@ namespace TradesAnalyser.Models
                 };
                 if (ofd.ShowDialog() == true)
                 {
-                    WindowTitle = "Trades Analyser: " + ofd.FileName;
+                    WindowTitle = $"{defaultTitle}: {ofd.FileName}";
                     _tradesProvider.Load(ofd.FileName);
                     Calculate();
                 }                
@@ -178,30 +187,28 @@ namespace TradesAnalyser.Models
                 MessageBox.Show(e.Message); 
             }
         }
+        private void ResetButtonClickHandler(object param)
+        {
+            Reset();
+            //MessageBox.Show("RESET");
+        }
 
         #endregion
 
         #region === Methods ===================================
 
+        private void Reset()
+        {
+            _hourlyTradesContainer.Reset(true);
+            _tradesProvider.Reset();
+            UpdateUi();
+            WindowTitle = defaultTitle;
+        }
         private void Calculate()
         {
             _tradesProcessor.ProcessPnl(_tradesProvider.Trades, 3);
             ProcessTrades();
-
-            var pnl1 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades);
-            PnlStatus = $"PNL: {pnl1:N0}";
-
-            var pnl2 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades);
-            PnlUpdStatus = $"PNL UPD: {pnl2:N0}";
-
-            var pnl3 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer);
-            PnlFltStatus = $"PNL FLT: {pnl3:N0}";
-
-            var pnl4 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer);
-            PnlFltUpdStatus = $"PNL FLT UPD: {pnl4:N0}";
-
-            TotalTradesStatus    = _tradesProvider.Trades.Count;
-            FilteredTradesStatus = _tradesProvider.Trades.Where(t => _hourlyTradesContainer.Accepts(t)).ToList().Count;
+            UpdateUi();
         }
         private void ProcessTrades()
         {
@@ -218,7 +225,35 @@ namespace TradesAnalyser.Models
                 _hourlyTradesContainer
             );
         }
+        private void UpdateUi()
+        {
+            var pnl1 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades);
+            if (pnl1 > 0)
+                PnlStatus = $"PNL: {pnl1:N0}";
+            else
+                PnlStatus = "PNL: 0";
 
+            var pnl2 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades);
+            if (pnl2 > 0)
+                PnlUpdStatus = $"PNL UPD: {pnl2:N0}";
+            else
+                PnlUpdStatus = "PNL UPD: 0";
+
+            var pnl3 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer);
+            if (pnl3 > 0)
+                PnlFltStatus = $"PNL FLT: {pnl3:N0}";
+            else
+                PnlFltStatus = "PNL FLT: 0";
+
+            var pnl4 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer);
+            if (pnl4 > 0)
+                PnlFltUpdStatus = $"PNL FLT UPD: {pnl4:N0}";
+            else
+                PnlFltUpdStatus = $"PNL FLT UPD: 0";
+
+            TotalTradesStatus = _tradesProvider.Trades.Count;
+            FilteredTradesStatus = _tradesProvider.Trades.Where(t => _hourlyTradesContainer.Accepts(t)).ToList().Count;
+        }
         #endregion
     }
 }
