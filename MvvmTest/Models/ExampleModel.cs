@@ -1,6 +1,7 @@
 ﻿using Base;
 using Exchange;
 using System;
+using WpfCommon;
 
 namespace MvvmTest.Models
 {

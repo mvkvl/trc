@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MvvmTest.Models
+namespace WpfCommon
 {
     public abstract class BaseModel : INotifyPropertyChanged
     {
