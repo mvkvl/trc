@@ -16,6 +16,7 @@ namespace TradesAnalyser.Trades
         private readonly CultureInfo cultureInfo = new CultureInfo("ru-RU");
 
         public List<Trade> Trades { get; private set; } = new List<Trade>();
+        public decimal Max = 0;
         public TradesProvider() {
         }
 
@@ -35,6 +36,10 @@ namespace TradesAnalyser.Trades
                 if (Parse(line, out Trade trade))
                 {
                     result.Add(trade);
+                    if (Max < trade.Pnl)
+                    {
+                        Max = trade.Pnl;
+                    }
                 }
             }
             Trades = result;

@@ -58,6 +58,8 @@
     </ApplicationDefinition>
     <Compile Include="Models\TradeHour.cs" />
     <Compile Include="Models\TradeHourContainer.cs" />
+    <Compile Include="Trades\CalculatedData.cs" />
+    <Compile Include="Trades\Calculator.cs" />
     <Compile Include="Trades\Trade.cs" />
     <Compile Include="Trades\TradesProcessor.cs" />
     <Compile Include="Trades\TradesProvider.cs" />

@@ -52,6 +52,7 @@ namespace TradesAnalyser.Models
                     if (resetActive)
                         th.IsActive = true;
                     th.Pnl = 0;
+                    th.Max = 0;
                     th.SelectionUpdated += processorDelegate;
                 }
             }
@@ -71,11 +72,12 @@ namespace TradesAnalyser.Models
         {
             return Accepts(t, out int _, out int _);
         }
-        public bool TryAdd(Trade t)
+        public bool TryAdd(Trade t, decimal maxPnl)
         {
             if (Accepts(t, out int d, out int h))
             {
                 Trades[d][h].Pnl += t.Pnl;
+                Trades[d][h].Max  = maxPnl;
                 return true;
             }
             return false;

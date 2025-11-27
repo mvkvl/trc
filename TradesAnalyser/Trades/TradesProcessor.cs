@@ -11,6 +11,11 @@ namespace TradesAnalyser.Trades
     }
     internal class TradesProcessor
     {
+        internal List<CalculatedData> CalculateAll()
+        {
+            return null;
+        }
+
         internal decimal Pnl(SourceType st, List<Trade> trades)
         {
             if (trades == null || trades.Count == 0)
@@ -100,7 +105,7 @@ namespace TradesAnalyser.Trades
                 }
             }
         }
-        internal void ProcessDailyTrades(DateTime since, DateTime till, List<Trade> trades, TradeHourContainer thc)
+        internal void ProcessDailyTrades(DateTime since, DateTime till, List<Trade> trades, decimal maxPnl, TradeHourContainer thc)
         {
             // обнуляем всё
             thc.Reset();
@@ -108,7 +113,7 @@ namespace TradesAnalyser.Trades
             foreach (Trade t in trades)
             {
                 if (t.Time < since || t.Time > till) continue;
-                thc.TryAdd(t);
+                thc.TryAdd(t, maxPnl);
             }
         }
     }

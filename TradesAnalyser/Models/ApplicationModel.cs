@@ -2,6 +2,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -126,7 +127,7 @@ namespace TradesAnalyser.Models
         private readonly TradeHourContainer _hourlyTradesContainer;
         public List<List<TradeHour>> TradeWeek { get => _hourlyTradesContainer.Get(); }
 
-        //public List<ResultData> CalculatedData { get; set; }
+        public ObservableCollection<CalculatedData> CalculatedData { get; set; } = new ObservableCollection<CalculatedData>();
 
         #endregion
 
@@ -154,11 +155,6 @@ namespace TradesAnalyser.Models
 
             // initialize properties
             Reset();
-            //WindowTitle = defaultTitle;
-            //PnlStatus = "PNL: N/A";
-            //PnlUpdStatus = "PNL UPD: N/A";
-            //PnlFltStatus = "PNL FILTERED: N/A";
-            //PnlFltUpdStatus = "PNL FILTERED UPD: N/A";
         }
 
 
@@ -222,6 +218,7 @@ namespace TradesAnalyser.Models
                 DateFrom,
                 DateTo,
                 _tradesProvider.Trades,
+                _tradesProvider.Max,
                 _hourlyTradesContainer
             );
         }
