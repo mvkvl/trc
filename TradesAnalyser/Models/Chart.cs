@@ -4,12 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using WpfCommon;
 
 namespace TradesAnalyser.Charts
 {
     public class Chart: BaseModel
     {
+
+        private readonly Brush Color1 = new SolidColorBrush(Colors.Black);
+        private readonly Brush Color2 = new SolidColorBrush(Colors.Green);
+
         private readonly object _lock = new object();
 
         private double _canvasWidth = 293;
@@ -34,25 +40,41 @@ namespace TradesAnalyser.Charts
         {
             Task.Run(async () =>
             {
-                doDraw(values);
+                decimal maxEquity = values.Max();
+                decimal minEquity = values.Min();
+                doDraw(values, Color1, true, maxEquity, minEquity);
             });
         }
-        private void doDraw(List<decimal> values)
+        public void Draw(List<decimal> values1, List<decimal> values2)
+        {
+            Task.Run(async () =>
+            {
+                var combined = values1.Concat(values2);
+                decimal maxEquity = combined.Max();
+                decimal minEquity = combined.Min();
+                doDraw(values1, Color1, true, maxEquity, minEquity);
+                doDraw(values2, Color2, false, maxEquity, minEquity);
+            });
+        }
+        private void doDraw(List<decimal> values, Brush color, bool clear, decimal maxEquity, decimal minEquity)
         {
             if (values == null || values.Count == 0)
             {
-                Lines.Clear();
+                if (clear) Lines.Clear();
                 OnPropertyChanged(nameof(Lines));
                 return;
             }
-            decimal maxEquity = values.Max();
-            decimal minEquity = values.Min();
+            //decimal maxEquity = values.Max();
+            //decimal minEquity = values.Min();
             double sx = _canvasWidth / values.Count;
             double ky = (double)(maxEquity - minEquity) / _canvasHeight;
             double x = 0, y = 0, y2;
-            lock (_lock)
+            if (clear)
             {
-                Lines.Clear();
+                lock (_lock)
+                {
+                    Lines.Clear();
+                }
             }
             for (int i = 0; i < values.Count - 1; i++)
             {
@@ -64,7 +86,10 @@ namespace TradesAnalyser.Charts
                     Y1 = y,
                     X2 = x + sx,
                     Y2 = y2,
+                    Stroke = color,
+                    Thickness = 1,
                 };
+                
                 lock (_lock)
                 {
                     Lines.Add(ln);

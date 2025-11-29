@@ -1,4 +1,5 @@
-﻿using WpfCommon;
+﻿using System.Windows.Media;
+using WpfCommon;
 
 namespace TradesAnalyser.Charts
 {
@@ -15,5 +16,11 @@ namespace TradesAnalyser.Charts
 
         private double _y2;
         public double Y2 { get => _y2; set { _y2 = value; OnPropertyChanged(nameof(Y2)); } }
+
+        private Brush _color;
+        public Brush Stroke { get => _color; set { _color = value; OnPropertyChanged(nameof(Stroke)); } }
+
+        private int _thickness = 1;
+        public int Thickness { get => _thickness; set { _thickness = value; OnPropertyChanged(nameof(Thickness)); } }
     }
 }
