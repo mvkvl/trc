@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using TradesAnalyser.Charts;
 using TradesAnalyser.Commands;
 using TradesAnalyser.Trades;
@@ -105,6 +106,18 @@ namespace TradesAnalyser.Models
             }
         }
 
+
+        private string _calcStatus;
+        public string CalcStatus
+        {
+            get => _calcStatus;
+            set
+            {
+                _calcStatus = value;
+                OnPropertyChanged(nameof(CalcStatus));
+            }
+        }
+        
         #endregion
         #region - Data
 
@@ -159,25 +172,30 @@ namespace TradesAnalyser.Models
 
         private void FileOpenButtonClickHandler(object param)
         {
-            try
+            Task.Run(async () =>
             {
-                OpenFileDialog ofd = new OpenFileDialog
+                try
                 {
-                    Filter = "Файлы сделок|*.csv",
-                    Multiselect = false
-                };
-                if (ofd.ShowDialog() == true)
+                    OpenFileDialog ofd = new OpenFileDialog
+                    {
+                        Filter = "Файлы сделок|*.csv",
+                        Multiselect = false
+                    };
+                    if (ofd.ShowDialog() == true)
+                    {
+                        WindowTitle = $"{defaultTitle}: {ofd.FileName}";
+                        _tradesProvider.Load(ofd.FileName);
+                        Calculate();
+                    }
+                }
+                catch (Exception e)
                 {
-                    WindowTitle = $"{defaultTitle}: {ofd.FileName}";
-                    _tradesProvider.Load(ofd.FileName);
-                    Calculate();
-                }                
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message); 
-            }
+                    MessageBox.Show(e.Message);
+                }
+            });
         }
+
+
         private void ResetButtonClickHandler(object param)
         {
             Reset();
@@ -225,15 +243,18 @@ namespace TradesAnalyser.Models
             chart3?.Clear();
             chart4?.Clear();
             WindowTitle = defaultTitle;
+            CalcStatus = "";
         }
         internal void Calculate()
         {
+            //CalcStatus = "Вычисляю";
             Task.Run(async () =>
             {
                 _tradesProcessor.ProcessPnl(_tradesProvider.Trades, 2, 10);
                 ProcessTrades();
                 _statsCalculator.Calculate(DateFrom, DateTo, _tradesProvider.Trades, _hourlyTradesContainer);
                 UpdateUi();
+                //CalcStatus = "Готово";
             });
         }
         private void ProcessTrades()
@@ -252,7 +273,7 @@ namespace TradesAnalyser.Models
                 _hourlyTradesContainer
             );
         }
-        private void UpdateUi()
+        private async void UpdateUi()
         {
 
             TotalTradesStatus = _tradesProvider.
@@ -268,6 +289,7 @@ namespace TradesAnalyser.Models
                 Count;
 
             UpdateCharts();
+
         }
 
         private void UpdateCharts()
@@ -278,10 +300,23 @@ namespace TradesAnalyser.Models
             }
             Task.Run(async () =>
             {
-                chart1?.Draw(_statsCalculator.Equity(SourceType.ORIGINAL, _tradesProvider.Trades));
-                chart2?.Draw(_statsCalculator.Equity(SourceType.UPDATED, _tradesProvider.Trades));
-                chart3?.Draw(_statsCalculator.Equity(DateFrom, DateTo, SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer));
-                chart4?.Draw(_statsCalculator.Equity(DateFrom, DateTo, SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer));
+                chart1?.Draw(
+                    _statsCalculator.Equity(SourceType.ORIGINAL, _tradesProvider.Trades)
+                );
+
+                chart2?.Draw(
+                    _statsCalculator.Equity(SourceType.ORIGINAL, _tradesProvider.Trades),
+                    _statsCalculator.Equity(SourceType.UPDATED, _tradesProvider.Trades)
+                );
+
+                chart3?.Draw(
+                    _statsCalculator.Equity(SourceType.ORIGINAL, _tradesProvider.Trades),
+                    _statsCalculator.Equity(DateFrom, DateTo, SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer)
+                );
+                chart4?.Draw(
+                    _statsCalculator.Equity(SourceType.UPDATED, _tradesProvider.Trades),
+                    _statsCalculator.Equity(DateFrom, DateTo, SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer)
+                );
             });
         }
 
