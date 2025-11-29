@@ -56,10 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Chart.cs" />
+    <Compile Include="Models\Line.cs" />
     <Compile Include="Models\TradeHour.cs" />
     <Compile Include="Models\TradeHourContainer.cs" />
-    <Compile Include="Trades\CalculatedData.cs" />
-    <Compile Include="Trades\Calculator.cs" />
+    <Compile Include="Trades\StatsRecord.cs" />
+    <Compile Include="Trades\StatsCalculator.cs" />
     <Compile Include="Trades\Trade.cs" />
     <Compile Include="Trades\TradesProcessor.cs" />
     <Compile Include="Trades\TradesProvider.cs" />

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using TradesAnalyser.Charts;
 using TradesAnalyser.Commands;
 using TradesAnalyser.Trades;
 using WpfCommon;
@@ -21,6 +21,7 @@ namespace TradesAnalyser.Models
 
         private readonly TradesProvider  _tradesProvider;
         private readonly TradesProcessor _tradesProcessor;
+        private readonly StatsCalculator _statsCalculator;
 
         #endregion
 
@@ -69,6 +70,10 @@ namespace TradesAnalyser.Models
         {
             get => cmdReset;
         }
+        //public ICommand CmdSelectedDateChanged
+        //{
+        //    get => cmdSelectedDateChanged;
+        //}
 
         #endregion
         #region - UI elements
@@ -77,27 +82,6 @@ namespace TradesAnalyser.Models
         public string WindowTitle { 
             get => _windowTitle; 
             set { _windowTitle = value; OnPropertyChanged(nameof(WindowTitle)); }
-        }
-        
-        private string _pnlStatus;
-        public string PnlStatus { 
-            get => _pnlStatus; 
-            set { _pnlStatus = value; OnPropertyChanged(nameof(PnlStatus)); } 
-        }
-        private string _pnlUpdStatus;
-        public string PnlUpdStatus { 
-            get => _pnlUpdStatus;
-            set { _pnlUpdStatus = value; OnPropertyChanged(nameof(PnlUpdStatus)); }
-        }
-        private string _pnlFltStatus;
-        public string PnlFltStatus { 
-            get => _pnlFltStatus;
-            set { _pnlFltStatus = value; OnPropertyChanged(nameof(PnlFltStatus)); }
-        }
-        private string _pnlFltUpdStatus;
-        public string PnlFltUpdStatus {
-            get => _pnlFltUpdStatus;
-            set { _pnlFltUpdStatus = value; OnPropertyChanged(nameof(PnlFltUpdStatus)); }
         }
 
         private int _totalTradesStatus;
@@ -127,7 +111,15 @@ namespace TradesAnalyser.Models
         private readonly TradeHourContainer _hourlyTradesContainer;
         public List<List<TradeHour>> TradeWeek { get => _hourlyTradesContainer.Get(); }
 
-        public ObservableCollection<CalculatedData> CalculatedData { get; set; } = new ObservableCollection<CalculatedData>();
+        public ObservableCollection<StatsRecord> CalculatedData { get; set; } = new ObservableCollection<StatsRecord>();
+
+        #endregion
+        #region - Charts
+
+        public Chart chart1;
+        public Chart chart2;
+        public Chart chart3;
+        public Chart chart4;
 
         #endregion
 
@@ -137,6 +129,7 @@ namespace TradesAnalyser.Models
 
         private CommandDelegate cmdFileOpen;
         private CommandDelegate cmdReset;
+        //private CommandDelegate cmdSelectedDateChanged;
 
         #endregion
 
@@ -147,8 +140,10 @@ namespace TradesAnalyser.Models
             // configure commands
             cmdFileOpen = new CommandDelegate(FileOpenButtonClickHandler);
             cmdReset = new CommandDelegate(ResetButtonClickHandler);
+            //cmdSelectedDateChanged = new CommandDelegate(DateChangeHandler);
 
             // initialize fields
+            _statsCalculator       = new StatsCalculator();
             _tradesProvider        = new TradesProvider();
             _tradesProcessor       = new TradesProcessor();
             _hourlyTradesContainer = new TradeHourContainer(Calculate);
@@ -188,6 +183,30 @@ namespace TradesAnalyser.Models
             Reset();
             //MessageBox.Show("RESET");
         }
+        //private void DateChangeHandler(object sender, SelectionChangedEventArgs e)
+        //{
+        //    Calculate();
+        //}
+        //private void myDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // Get the DatePicker control that raised the event
+        //    DatePicker datePicker = sender as DatePicker;
+
+        //    // Get the newly selected date
+        //    DateTime? newSelectedDate = datePicker.SelectedDate;
+
+        //    // Perform your desired actions based on the new date
+        //    if (newSelectedDate.HasValue)
+        //    {
+        //        // Example: Display the selected date
+        //        MessageBox.Show($"Selected date: {newSelectedDate.Value.ToShortDateString()}");
+        //    }
+        //    else
+        //    {
+        //        // Handle the case where no date is selected (e.g., cleared)
+        //        MessageBox.Show("No date selected.");
+        //    }
+        //}
 
         #endregion
 
@@ -197,14 +216,25 @@ namespace TradesAnalyser.Models
         {
             _hourlyTradesContainer.Reset(true);
             _tradesProvider.Reset();
+            _statsCalculator.Reset();
+            CalculatedData.Clear();
+            _statsCalculator.Data.ForEach(CalculatedData.Add);
             UpdateUi();
+            chart1?.Clear();
+            chart2?.Clear();
+            chart3?.Clear();
+            chart4?.Clear();
             WindowTitle = defaultTitle;
         }
-        private void Calculate()
+        internal void Calculate()
         {
-            _tradesProcessor.ProcessPnl(_tradesProvider.Trades, 3);
-            ProcessTrades();
-            UpdateUi();
+            Task.Run(async () =>
+            {
+                _tradesProcessor.ProcessPnl(_tradesProvider.Trades, 2, 10);
+                ProcessTrades();
+                _statsCalculator.Calculate(DateFrom, DateTo, _tradesProvider.Trades, _hourlyTradesContainer);
+                UpdateUi();
+            });
         }
         private void ProcessTrades()
         {
@@ -224,33 +254,37 @@ namespace TradesAnalyser.Models
         }
         private void UpdateUi()
         {
-            var pnl1 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades);
-            if (pnl1 > 0)
-                PnlStatus = $"PNL: {pnl1:N0}";
-            else
-                PnlStatus = "PNL: 0";
 
-            var pnl2 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades);
-            if (pnl2 > 0)
-                PnlUpdStatus = $"PNL UPD: {pnl2:N0}";
-            else
-                PnlUpdStatus = "PNL UPD: 0";
+            TotalTradesStatus = _tradesProvider.
+                Trades.
+                Where(t => t.Time >= DateFrom && t.Time <= DateTo).
+                ToList().
+                Count;
+            FilteredTradesStatus = _tradesProvider.
+                Trades.
+                Where(t => t.Time >= DateFrom && t.Time <= DateTo).
+                Where(t => _hourlyTradesContainer.Accepts(t)).
+                ToList().
+                Count;
 
-            var pnl3 = _tradesProcessor.Pnl(SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer);
-            if (pnl3 > 0)
-                PnlFltStatus = $"PNL FLT: {pnl3:N0}";
-            else
-                PnlFltStatus = "PNL FLT: 0";
-
-            var pnl4 = _tradesProcessor.Pnl(SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer);
-            if (pnl4 > 0)
-                PnlFltUpdStatus = $"PNL FLT UPD: {pnl4:N0}";
-            else
-                PnlFltUpdStatus = $"PNL FLT UPD: 0";
-
-            TotalTradesStatus = _tradesProvider.Trades.Count;
-            FilteredTradesStatus = _tradesProvider.Trades.Where(t => _hourlyTradesContainer.Accepts(t)).ToList().Count;
+            UpdateCharts();
         }
+
+        private void UpdateCharts()
+        {
+            if (_tradesProvider.Trades == null || _tradesProvider.Trades.Count == 0)
+            {
+                return;
+            }
+            Task.Run(async () =>
+            {
+                chart1?.Draw(_statsCalculator.Equity(SourceType.ORIGINAL, _tradesProvider.Trades));
+                chart2?.Draw(_statsCalculator.Equity(SourceType.UPDATED, _tradesProvider.Trades));
+                chart3?.Draw(_statsCalculator.Equity(DateFrom, DateTo, SourceType.ORIGINAL, _tradesProvider.Trades, _hourlyTradesContainer));
+                chart4?.Draw(_statsCalculator.Equity(DateFrom, DateTo, SourceType.UPDATED, _tradesProvider.Trades, _hourlyTradesContainer));
+            });
+        }
+
         #endregion
     }
 }

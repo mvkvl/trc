@@ -26,6 +26,7 @@ namespace TradesAnalyser.Trades
         }
         public void Load(string fileName)
         {
+            Max = 0;
             var result = new List<Trade>();
             foreach (string line in File.ReadLines(fileName))
             {
@@ -44,7 +45,7 @@ namespace TradesAnalyser.Trades
             }
             Trades = result;
         }
-        
+
         private bool Parse(string input, out Trade result)
         {
             result = null;
@@ -60,7 +61,7 @@ namespace TradesAnalyser.Trades
             {
                 pnl = decimal.Parse(parts[23], numberFormatProvider);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //MessageBox.Show($"{e.Message}: '{parts[23]}'");
                 return false;
@@ -90,8 +91,15 @@ namespace TradesAnalyser.Trades
                 return false;
             }
 
+            var exitSignal = ExitSignal.TAKE;
+            if (parts[13] == "\"SS\"" || parts[13] == "\"LS\"" || parts[13] == "\"CL\"" || parts[13] == "\"CS\"") {
+                exitSignal = ExitSignal.STOP;
+            }
+            
+
             result = new Trade
             {
+                ExitSignal = exitSignal,
                 Time = parsedDateTime,
                 Side = side,
                 Pnl = pnl,

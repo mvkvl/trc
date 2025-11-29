@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TradesAnalyser"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="650" Width="1245" MinWidth="1240" MaxWidth="1240">
+        Title="{Binding WindowTitle}" Height="725" Width="1240" MinWidth="240" MaxWidth="1240"
+>
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin"       Value="2"/>
@@ -22,22 +23,47 @@
             <Setter Property="Padding"      Value="0, 0, 0, 0"/>
             <Setter Property="Margin"       Value="2, 5, 2, 0"/>
         </Style>
+        <!--
+        <Style x:Key="DGCHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="LightBlue" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontFamily" Value="Calibri" />
+        </Style>
+        -->
     </Window.Resources>
     <Grid>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/> <!-- 1 -->
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/> <!-- 5 -->
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/> <!-- 10 -->
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/> <!-- 15 -->
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/> <!-- 20 -->
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="250" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" 
-                            MinHeight="50"/>
+                           MinHeight="50"/>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -89,7 +115,7 @@
                         Command="{Binding CmdReset}">⟳</Button>
                 </StackPanel>
 
-                <TextBlock 
+                <TextBlock
                         Text="Дата от" 
                         Grid.Column="0"
                         Grid.Row="1"
@@ -99,6 +125,7 @@
                         Grid.Column="1"
                         Grid.Row="1"
                         Margin="10, 5, 10, 5"
+                        SelectedDateChanged="DateChangeHandler"
                         SelectedDate="{Binding DateFrom}"/>
 
                 <TextBlock 
@@ -111,6 +138,7 @@
                         Grid.Column="1"
                         Grid.Row="2"
                         Margin="10, 5, 10, 5"
+                        SelectedDateChanged="DateChangeHandler"
                         SelectedDate="{Binding DateTo}"/>
 
                 <TextBlock
@@ -133,16 +161,46 @@
                 Header="Результаты"
                 Grid.Column="0"
                 Grid.Row="1"
-                Grid.ColumnSpan="7"
-                MaxWidth="340"
-                MinWidth="340"
-                MaxHeight="240"
-                MinHeight="240"
+                Grid.ColumnSpan="22"
+                MinWidth="1210"
+                MaxWidth="1210"
+            MinHeight="160"
+            MaxHeight="160"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="Transparent"
+                Padding="5,5,5,5"
                 Margin="7, 0, 0, 0">
-            <DataGrid ItemsSource="{Binding CalculatedData}"/>
+            <!--
+            -->
+            <DataGrid ItemsSource="{Binding CalculatedData}">
+                <!--
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Подход"  Binding="{Binding Title}"/>
+                    <DataGridTextColumn Header="Сделок"  Binding="{Binding TR, StringFormat=D}" />
+                    <DataGridTextColumn Header="Рез."    Binding="{Binding RES, StringFormat=D0}" />
+                    <DataGridTextColumn Header="Рез.L"   Binding="{Binding RESL, StringFormat=D0}" />
+                    <DataGridTextColumn Header="Рез.S"   Binding="{Binding RESS, StringFormat=D0}" />
+
+                    <DataGridTextColumn Header="ПДС"     Binding="{Binding PTP, StringFormat=N2}" />
+                    <DataGridTextColumn Header="ПДС.L"   Binding="{Binding PTPL, StringFormat=N2}" />
+                    <DataGridTextColumn Header="ПДС.S"   Binding="{Binding PTPS, StringFormat=N2}" />
+
+                    <DataGridTextColumn Header="Takes"   Binding="{Binding TK, StringFormat=D}" />
+                    <DataGridTextColumn Header="Stops"   Binding="{Binding ST, StringFormat=D}" />
+                    <DataGridTextColumn Header="Takes.L" Binding="{Binding TKL, StringFormat=D}" />
+                    <DataGridTextColumn Header="Stops.L" Binding="{Binding STL, StringFormat=D}" />
+                    <DataGridTextColumn Header="Takes.S" Binding="{Binding TKS, StringFormat=D}" />
+                    <DataGridTextColumn Header="Sops.S"  Binding="{Binding STS, StringFormat=D}" />
+
+                    <DataGridTextColumn Header="Макс. просадка"   Binding="{Binding MDD, StringFormat=N2}" />
+                    <DataGridTextColumn Header="Макс. просадка %" Binding="{Binding MDDP, StringFormat=N2}" />
+
+                    <DataGridTextColumn Header="Description"      Binding="{Binding Description}" />
+
+                </DataGrid.Columns>
+                -->
+            </DataGrid>
         </GroupBox>
             
         <!-- Дни / часы -->
@@ -150,7 +208,7 @@
                 Header="Сделки (по часам)"
                 Grid.Column="4"
                 Grid.Row="0"
-                Grid.ColumnSpan="4"
+                Grid.ColumnSpan="17"
                 MaxWidth="1010"
                 MinWidth="1010"
                 MaxHeight="250"
@@ -195,7 +253,104 @@
             </ItemsControl>
         </GroupBox>
 
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="7" Background="LightGray">
+        <GroupBox
+            VerticalAlignment="Top"
+            Header="Графики"
+                Grid.Column="0"
+                Grid.Row="2"
+                Grid.ColumnSpan="21"
+                MinWidth="1210"
+                MaxWidth="1210"
+                MinHeight="250"
+                MaxHeight="500"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                Padding="0, 5, 0, 0"
+                Margin="7, 0, 0, 0">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <ItemsControl x:Name="Chart1"
+                    ItemsSource="{Binding Path=Lines}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas
+                                Background="LightGray"
+                                Margin="5, 0, 0, 0"
+                                Width="{Binding CanvasWidth}" 
+                                Height="{Binding CanvasHeight}"
+                                >
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Black" StrokeThickness="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl x:Name="Chart2"
+                    ItemsSource="{Binding Path=Lines}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas
+                                Background="LightGray"
+                                Margin="5, 0, 0, 0"
+                                Width="{Binding CanvasWidth}" 
+                                Height="{Binding CanvasHeight}"
+                                >
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Black" StrokeThickness="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl x:Name="Chart3"
+                    ItemsSource="{Binding Path=Lines}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas
+                                Background="LightGray"
+                                Margin="5, 0, 0, 0"
+                                Width="{Binding CanvasWidth}" 
+                                Height="{Binding CanvasHeight}"
+                                >
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Black" StrokeThickness="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl x:Name="Chart4"
+                    ItemsSource="{Binding Path=Lines}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas
+                                Background="LightGray"
+                                Margin="5, 0, 0, 0"
+                                Width="{Binding CanvasWidth}" 
+                                Height="{Binding CanvasHeight}"
+                                >
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Black" StrokeThickness="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+            
+        </GroupBox>
+
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="25" Background="LightGray">
             <StatusBarItem>
                 <TextBlock Text="{Binding TotalTradesStatus, StringFormat=Total Trades: {0:D}}" />
             </StatusBarItem>
@@ -203,30 +358,11 @@
             <StatusBarItem>
                 <TextBlock Text="{Binding FilteredTradesStatus, StringFormat=Filtered Trades: {0:D}}" />
             </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding PnlStatus}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding PnlUpdStatus}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding PnlFltStatus}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding PnlFltUpdStatus}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem HorizontalAlignment="Right">
-            </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock Text="T/A" />
             </StatusBarItem>
         </StatusBar>
-
+        
     </Grid>
        
 </Window>

@@ -60,7 +60,6 @@ namespace TradesAnalyser.Models
             set
             {
                 _value = value;
-                if (_value > _max) Max = _pnl;
                 OnPropertyChanged(nameof(Value));
             }
         }
